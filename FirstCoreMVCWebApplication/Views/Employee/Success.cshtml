@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Success";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="alert alert-success" role="alert">
+    <strong>Success!</strong> Employee added successfully.
+</div>
+
+<a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Add Another Employee</a>

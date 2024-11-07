@@ -1,0 +1,54 @@
+﻿@model Employee
+
+@{
+    ViewData["Title"] = "Create";
+}
+<h1>Create Employee</h1>
+ 
+<!-- Employee Creation Form -->
+<div class="row">
+    <form asp-controller="Employee" asp-action="Create" method="post" class="mt-3">
+        <!-- Validation Summary to display all validation errors -->
+        <div asp-validation-summary="All" class="text-danger"></div>
+        
+        <!-- Name Field -->
+        <div class="form-group row">
+            <label asp-for="Name" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="Name" class="form-control" placeholder="Enter your name" />
+                <!-- Displays validation error for Name -->
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group row">
+            <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="Email" class="form-control" placeholder="Enter Your Email">
+                <!-- Displays validation error for Email -->
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Department Field -->
+        <div class="form-group row">
+            <label asp-for="Department" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <select asp-for="Department" class="form-select"
+                        asp-items="Html.GetEnumSelectList<Department>()">
+                    <option value="">Please Select</option> <!-- Placeholder option -->
+                </select>
+                <!-- Displays validation error for Department -->
+                <span asp-validation-for="Department" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group row">
+            <div class="col-sm-10 offset-sm-2">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </form>
+</div>

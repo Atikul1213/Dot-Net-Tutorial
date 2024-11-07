@@ -1,0 +1,44 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Registration Success";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="alert alert-success text-center" role="alert">
+                <h1 class="alert-heading">🎉 Registration Successful!</h1>
+                <p class="lead">Welcome @Model.Name!</p>
+                <p>Your registration has been completed successfully. Below are the details you provided:</p>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>📛 Name:</strong> @Model.Name</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>📧 Email:</strong> @Model.Email</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>📱 Mobile:</strong> @Model.Mobile</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>👤 Gender:</strong> @Model.Gender</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>🌍 Country:</strong> @Model.Country</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>🎂 Date of Birth:</strong> @Model.DateOfBirth?.ToString("d")</p>
+                </div>
+                <div class="col-12">
+                    <p><strong>🎯 Hobbies:</strong> @string.Join(", ", @Model.Hobbies ?? new List<string>())</p>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <a asp-action="Create" asp-controller="User" class="btn btn-primary btn-lg">Create New User</a>
+            </div>
+        </div>
+    </div>
+</div>
