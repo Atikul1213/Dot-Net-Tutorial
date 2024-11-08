@@ -1,0 +1,64 @@
+﻿@model Employee
+
+@{
+    ViewData["Title"] = "Registration Successful";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h2 class="card-title mb-0">Welcome, @Model.FirstName @Model.LastName!</h2>
+        </div>
+        <div class="card-body">
+            <p class="lead">Your registration was successful. Below are your details:</p>
+            <hr />
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Basic Information</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Name:</strong> @Model.FirstName @Model.LastName</li>
+                        <li class="list-group-item"><strong>Email:</strong> @Model.Email</li>
+                        <li class="list-group-item"><strong>Date of Birth:</strong> @Model.DateOfBirth?.ToString("MMMM dd, yyyy")</li>
+                        <li class="list-group-item"><strong>Gender:</strong> @Model.Gender</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Address</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Street:</strong> @Model.Address.Street</li>
+                        <li class="list-group-item"><strong>City:</strong> @Model.Address.City</li>
+                        <li class="list-group-item"><strong>State:</strong> @Model.Address.State</li>
+                        <li class="list-group-item"><strong>Postal Code:</strong> @Model.Address.PostalCode</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Job Details</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Job Title:</strong> @Model.JobDetail.JobTitle.TitleName</li>
+                        <li class="list-group-item"><strong>Department:</strong> @Model.JobDetail.Department.Name</li>
+                        <li class="list-group-item"><strong>Salary:</strong> @Model.JobDetail.Salary.ToString("C")</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Skills</h5>
+                    <ul class="list-group list-group-flush">
+                        @if (Model.SkillSets != null && Model.SkillSets.Any())
+                        {
+                            foreach (var skill in Model.SkillSets)
+                            {
+                                <li class="list-group-item">@skill.SkillName</li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item">No skills selected.</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

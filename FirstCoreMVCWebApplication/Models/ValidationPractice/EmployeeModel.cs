@@ -2,7 +2,7 @@
 
 namespace FirstCoreMVCWebApplication.Models.ValidationPractice
 {
-    public class Employee
+    public class EmployeeModel
     {
         [Key]
         public int Id { get; set; }

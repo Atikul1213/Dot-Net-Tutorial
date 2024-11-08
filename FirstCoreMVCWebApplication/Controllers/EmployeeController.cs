@@ -16,7 +16,7 @@ namespace FirstCoreMVCWebApplication.Controllers
         }
         //Handles the form submission for creating a new employee.
         [HttpPost]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(EmployeeModel employee)
         {
             // Check if the submitted model passes all validation rules
             if (ModelState.IsValid)

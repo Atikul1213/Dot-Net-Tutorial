@@ -1,4 +1,4 @@
-﻿@model Employee
+﻿@model EmployeeModel
 
 @{
     ViewData["Title"] = "Create";
@@ -17,6 +17,7 @@
             <div class="col-sm-10">
                 <input asp-for="Name" class="form-control" placeholder="Enter your name" />
                 <!-- Displays validation error for Name -->
+                <span class="text-danger">@Html.ValidationMessageFor(x=>x.Name)</span>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
@@ -35,10 +36,10 @@
         <div class="form-group row">
             <label asp-for="Department" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-10">
-                <select asp-for="Department" class="form-select"
-                        asp-items="Html.GetEnumSelectList<Department>()">
+                @* <select asp-for="Department" class="form-select"
+                         asp-items="Html.GetEnumSelectList<Department>()"> 
                     <option value="">Please Select</option> <!-- Placeholder option -->
-                </select>
+                </select> *@
                 <!-- Displays validation error for Department -->
                 <span asp-validation-for="Department" class="text-danger"></span>
             </div>
@@ -52,3 +53,9 @@
         </div>
     </form>
 </div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
