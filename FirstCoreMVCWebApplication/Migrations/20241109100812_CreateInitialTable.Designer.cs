@@ -4,6 +4,7 @@ using FirstCoreMVCWebApplication.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FirstCoreMVCWebApplication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241109100812_CreateInitialTable")]
+    partial class CreateInitialTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,27 +76,6 @@ namespace FirstCoreMVCWebApplication.Migrations
                         .IsUnique();
 
                     b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Company", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Company");
                 });
 
             modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Department", b =>
@@ -173,28 +155,6 @@ namespace FirstCoreMVCWebApplication.Migrations
                     b.HasKey("EmployeeId");
 
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Example", b =>
-                {
-                    b.Property<int>("ExampleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExampleId"));
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ExampleId");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("Examples");
                 });
 
             modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.JobDetail", b =>
@@ -425,17 +385,6 @@ namespace FirstCoreMVCWebApplication.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Example", b =>
-                {
-                    b.HasOne("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Company", "Company")
-                        .WithMany("Example")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-                });
-
             modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.JobDetail", b =>
                 {
                     b.HasOne("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Department", "Department")
@@ -502,11 +451,6 @@ namespace FirstCoreMVCWebApplication.Migrations
                         .IsRequired();
 
                     b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Company", b =>
-                {
-                    b.Navigation("Example");
                 });
 
             modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Employee", b =>

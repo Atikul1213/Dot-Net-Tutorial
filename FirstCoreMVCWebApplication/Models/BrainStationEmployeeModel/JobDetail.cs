@@ -13,7 +13,7 @@ namespace FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel
         [Required(ErrorMessage = "Employee is required")]
         public int EmployeeId { get; set; }
         [DataType(DataType.Currency)]
-        [Range(30000, 200000, ErrorMessage = "Salary must be between 30,000 and 2,00,000")]
+        [Range(3000, 200000, ErrorMessage = "Salary must be between 30,000 and 2,00,000")]
         public decimal Salary { get; set; }
         public Department Department { get; set; }
         public Employee Employee { get; set; }

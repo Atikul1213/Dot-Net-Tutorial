@@ -1,4 +1,5 @@
 ﻿using FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel;
+using FirstCoreMVCWebApplication.Models.EFCoreRelationShip;
 using Microsoft.EntityFrameworkCore;
 
 namespace FirstCoreMVCWebApplication.Data
@@ -40,6 +41,55 @@ namespace FirstCoreMVCWebApplication.Data
                 new JobTitle { JobTitleId = 5, TitleName = "System Administrator" }
                 // Add more job titles as needed
             );
+
+            modelBuilder.Entity<Author>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Name).IsRequired();
+
+                // one to one relation ship
+                entity.HasOne(x => x.Publisher)
+                .WithOne(p => p.Author)
+                .HasForeignKey<Publisher>(p => p.AuthorId)
+                .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<Book>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Title).IsRequired();
+
+                // one to many relation ship
+                entity.HasOne(x => x.Author)
+                .WithMany(p => p.Books)
+                .HasForeignKey(x => x.AuthorId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            });
+
+            modelBuilder.Entity<Publisher>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Name).IsRequired();
+
+            });
+
+            modelBuilder.Entity<BookPublisher>(entity =>
+            {
+                entity.HasKey(bp => new { bp.PublisherId, bp.BookId });
+                // Many to many
+                entity.HasOne(bp => bp.Book)
+                .WithMany(b => b.BookPublisher)
+                .HasForeignKey(bp => bp.BookId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(bp => bp.Publisher)
+                .WithMany(p => p.BookPublisher)
+                .HasForeignKey(bp => bp.PublisherId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            });
+
         }
         // DbSets for each model
         public DbSet<Employee> Employees { get; set; }
@@ -48,5 +98,10 @@ namespace FirstCoreMVCWebApplication.Data
         public DbSet<SkillSet> SkillSets { get; set; }
         public DbSet<JobDetail> JobDetails { get; set; }
         public DbSet<JobTitle> JobTitles { get; set; }
+
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Publisher> Publisher { get; set; }
+        public DbSet<Author> Author { get; set; }
+        public DbSet<BookPublisher> BookPublisher { get; set; }
     }
 }

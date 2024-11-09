@@ -21,6 +21,7 @@ namespace FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel
         [DataType(DataType.Date)]
         [DisplayName("Date of Birth")]
         public DateTime? DateOfBirth { get; set; }
+
         [Required(ErrorMessage = "Joining Date is required")]
         [DataType(DataType.Date)]
         [DisplayName("Joining Date")]

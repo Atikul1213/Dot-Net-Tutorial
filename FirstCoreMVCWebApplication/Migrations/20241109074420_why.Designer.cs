@@ -4,6 +4,7 @@ using FirstCoreMVCWebApplication.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FirstCoreMVCWebApplication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241109074420_why")]
+    partial class why
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,27 +76,6 @@ namespace FirstCoreMVCWebApplication.Migrations
                         .IsUnique();
 
                     b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Company", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Company");
                 });
 
             modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Department", b =>
@@ -173,28 +155,6 @@ namespace FirstCoreMVCWebApplication.Migrations
                     b.HasKey("EmployeeId");
 
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Example", b =>
-                {
-                    b.Property<int>("ExampleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExampleId"));
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ExampleId");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("Examples");
                 });
 
             modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.JobDetail", b =>
@@ -319,86 +279,6 @@ namespace FirstCoreMVCWebApplication.Migrations
                         });
                 });
 
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Author", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PublisherId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Author");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Book", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.BookPublisher", b =>
-                {
-                    b.Property<int>("PublisherId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PublisherId", "BookId");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("BookPublisher");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Publisher", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId")
-                        .IsUnique();
-
-                    b.ToTable("Publisher");
-                });
-
             modelBuilder.Entity("EmployeeSkillSet", b =>
                 {
                     b.HasOne("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Employee", null)
@@ -423,17 +303,6 @@ namespace FirstCoreMVCWebApplication.Migrations
                         .IsRequired();
 
                     b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Example", b =>
-                {
-                    b.HasOne("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Company", "Company")
-                        .WithMany("Example")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.JobDetail", b =>
@@ -463,52 +332,6 @@ namespace FirstCoreMVCWebApplication.Migrations
                     b.Navigation("JobTitle");
                 });
 
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Book", b =>
-                {
-                    b.HasOne("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Author", "Author")
-                        .WithMany("Books")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.BookPublisher", b =>
-                {
-                    b.HasOne("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Book", "Book")
-                        .WithMany("BookPublisher")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Publisher", "Publisher")
-                        .WithMany("BookPublisher")
-                        .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Publisher");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Publisher", b =>
-                {
-                    b.HasOne("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Author", "Author")
-                        .WithOne("Publisher")
-                        .HasForeignKey("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Publisher", "AuthorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Company", b =>
-                {
-                    b.Navigation("Example");
-                });
-
             modelBuilder.Entity("FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel.Employee", b =>
                 {
                     b.Navigation("Address")
@@ -516,24 +339,6 @@ namespace FirstCoreMVCWebApplication.Migrations
 
                     b.Navigation("JobDetail")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Author", b =>
-                {
-                    b.Navigation("Books");
-
-                    b.Navigation("Publisher")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Book", b =>
-                {
-                    b.Navigation("BookPublisher");
-                });
-
-            modelBuilder.Entity("FirstCoreMVCWebApplication.Models.EFCoreRelationShip.Publisher", b =>
-                {
-                    b.Navigation("BookPublisher");
                 });
 #pragma warning restore 612, 618
         }
