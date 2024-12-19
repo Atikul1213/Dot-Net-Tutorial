@@ -1,5 +1,8 @@
 using FirstCoreMVCWebApplication.Data;
 using FirstCoreMVCWebApplication.Models;
+using FirstCoreMVCWebApplication.Models.Fluent_Validation;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +38,13 @@ builder.Services.AddRateLimiter(options =>
         opt.AutoReplenishment = true;
     }).RejectionStatusCode = 429;
 });
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddTransient<IValidator<RegistrationModel>, RegistrationValidator>();
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

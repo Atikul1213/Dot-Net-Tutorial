@@ -1,0 +1,115 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Place Order";
+}
+<h2>Create Order</h2>
+<form asp-controller="Order" asp-action="Create" method="Post">
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+    <div class="form-group row mb-3">
+        <label asp-for="CustomerName" class="col-sm-2 col-form-label">Customer Name:</label>
+        <div class="col-sm-10">
+            <input asp-for="CustomerName" class="form-control">
+            <span asp-validation-for="CustomerName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label asp-for="OrderDate" class="col-sm-2 col-form-label">Order Date:</label>
+        <div class="col-sm-10">
+            <input asp-for="OrderDate" type="date" class="form-control">
+            <span asp-validation-for="OrderDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label asp-for="ShippingAddress" class="col-sm-2 col-form-label">Shipping Address:</label>
+        <div class="col-sm-10">
+            <input asp-for="ShippingAddress" class="form-control">
+            <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label asp-for="PhoneNumber" class="col-sm-2 col-form-label">Phone Number:</label>
+        <div class="col-sm-10">
+            <input asp-for="PhoneNumber" class="form-control">
+        </div>
+    </div>
+
+    <h3>Order Items</h3>
+    <table class="table table-bordered">
+        <colgroup>
+            <col style="width: 25%;">
+            <col style="width: 25%;">
+            <col style="width: 25%;">
+            <col style="width: 25%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Items.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <span>@Model.Items[i].Product?.Name</span>
+                        <input type="hidden" asp-for="@Model.Items[i].ProductId" />
+                    </td>
+                    <td>
+                        <input asp-for="@Model.Items[i].Quantity" type="number" class="form-control quantity" />
+                    </td>
+                    <td class="text-right">
+                        <span>@Model.Items[i].Price.ToString("C")</span>
+                        <input type="hidden" asp-for="@Model.Items[i].Price" class="unit-price" />
+                    </td>
+                    <td class="text-right">
+                        <span class="total-price">@((Model.Items[i].Price * Model.Items[i].Quantity).ToString("C"))</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="form-group row">
+        <div class="col-sm-12 d-flex justify-content-end">
+            <div class="d-inline-flex align-items-baseline">
+                <strong class="mr-2">Total Amount:</strong>
+                <span id="totalAmount" style="padding-left: 15px;">@Model.Items.Sum(i => i.Quantity * i.Price).ToString("C")</span>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Order</button>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.quantity').change(function () {
+                var total = 0;
+                $('tbody tr').each(function () {
+                    var $row = $(this);
+                    var qty = parseInt($row.find('.quantity').val(), 10);
+                    var price = parseFloat($row.find('.unit-price').val()); // Get the unit price from the hidden input
+
+                    var totalPrice = qty * price;
+
+                    // Update the displayed total price for each item
+                    $row.find('.total-price').text('$' + totalPrice.toFixed(2));
+
+                    // Add to overall total
+                    total += totalPrice;
+                });
+
+                // Update the total amount displayed
+                $('#totalAmount').text('$' + total.toFixed(2));
+            });
+        });
+    </script>
+}

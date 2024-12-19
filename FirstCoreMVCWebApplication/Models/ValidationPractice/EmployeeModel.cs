@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 
 namespace FirstCoreMVCWebApplication.Models.ValidationPractice
 {
@@ -10,7 +11,10 @@ namespace FirstCoreMVCWebApplication.Models.ValidationPractice
         public string Name { get; set; }
         [Required(ErrorMessage = "Please enter the email address")]
         public string Email { get; set; }
+        [BindRequired]
         [Required(ErrorMessage = "Please select a department.")]
         public Department? Department { get; set; }
+        [BindNever]
+        public string CreatedBy { get; set; }
     }
 }

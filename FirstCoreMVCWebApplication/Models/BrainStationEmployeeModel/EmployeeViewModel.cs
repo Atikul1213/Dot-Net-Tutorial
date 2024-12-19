@@ -20,6 +20,7 @@ namespace FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel
         [Required(ErrorMessage = "Date of Birth is required")]
         [DataType(DataType.Date)]
         [DisplayName("Date of Birth")]
+        //[Range(18,60,ErrorMessage ="Employee must be between 18 and 60 years old")]
         public DateTime? DateOfBirth { get; set; }
 
         [Required(ErrorMessage = "Joining Date is required")]
