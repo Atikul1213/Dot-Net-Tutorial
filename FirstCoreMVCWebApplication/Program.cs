@@ -8,74 +8,107 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
 
-var builder = WebApplication.CreateBuilder(args);
+#region Bootstrap Configuration
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json")
+    .Build();
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-#region Autofac Configure
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
-{
-    containerBuilder.RegisterModule(new WebModule());
-});
-
+Log.Logger = new LoggerConfiguration()
+             .ReadFrom.Configuration(configuration)
+             .CreateBootstrapLogger();
 #endregion
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
-builder.Services.AddRateLimiter(options =>
+try
 {
-    options.AddFixedWindowLimiter("FixedWindowPolicy", opt =>
+    Log.Information("Application starting....");
+    var builder = WebApplication.CreateBuilder(args);
+
+    // Add services to the container.
+    builder.Services.AddControllersWithViews();
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+    #region Autofac Configure
+    builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+    builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     {
-        opt.Window = TimeSpan.FromSeconds(5);
-        opt.PermitLimit = 5;
-        opt.QueueLimit = 10;
-        opt.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
-    }).RejectionStatusCode = 429;
-});
+        containerBuilder.RegisterModule(new WebModule());
+    });
+    #endregion
 
-builder.Services.AddRateLimiter(options =>
-{
-    options.AddTokenBucketLimiter("TokenBucketPolicy", opt =>
+    #region Serilog Configure
+    builder.Host.UseSerilog((context, lc) => lc
+        .MinimumLevel.Debug()
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+        .Enrich.FromLogContext()
+        .ReadFrom.Configuration(builder.Configuration)
+    );
+    #endregion
+    builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+    #region RateLimiter
+    builder.Services.AddRateLimiter(options =>
     {
-        opt.TokenLimit = 4;
-        opt.QueueLimit = 2;
-        opt.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
-        opt.ReplenishmentPeriod = TimeSpan.FromSeconds(10);
-        opt.TokensPerPeriod = 4;
-        opt.AutoReplenishment = true;
-    }).RejectionStatusCode = 429;
-});
+        options.AddFixedWindowLimiter("FixedWindowPolicy", opt =>
+        {
+            opt.Window = TimeSpan.FromSeconds(5);
+            opt.PermitLimit = 5;
+            opt.QueueLimit = 10;
+            opt.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+        }).RejectionStatusCode = 429;
+    });
 
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddFluentValidationClientsideAdapters();
-builder.Services.AddTransient<IValidator<RegistrationModel>, RegistrationValidator>();
+    builder.Services.AddRateLimiter(options =>
+    {
+        options.AddTokenBucketLimiter("TokenBucketPolicy", opt =>
+        {
+            opt.TokenLimit = 4;
+            opt.QueueLimit = 2;
+            opt.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+            opt.ReplenishmentPeriod = TimeSpan.FromSeconds(10);
+            opt.TokensPerPeriod = 4;
+            opt.AutoReplenishment = true;
+        }).RejectionStatusCode = 429;
+    });
+    #endregion
 
+    builder.Services.AddFluentValidationAutoValidation();
+    builder.Services.AddFluentValidationClientsideAdapters();
+    builder.Services.AddTransient<IValidator<RegistrationModel>, RegistrationValidator>();
 
+    var app = builder.Build();
 
-var app = builder.Build();
+    // Configure the HTTP request pipeline.
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseExceptionHandler("/Home/Error");
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+        app.UseHsts();
+    }
+    app.UseRateLimiter();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
+
+    app.UseRouting();
+
+    app.UseAuthorization();
+
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    app.Run();
+    Log.Information("Application running....");
 }
-app.UseRateLimiter();
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application crashed");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

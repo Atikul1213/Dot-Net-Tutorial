@@ -25,6 +25,7 @@ namespace FirstCoreMVCWebApplication.Controllers
         //[Route("Index")]
         public IActionResult Index()
         {
+            _logger.LogInformation("I am in Index page");
             var amount = _item.GetAmount();
             return View();
         }
