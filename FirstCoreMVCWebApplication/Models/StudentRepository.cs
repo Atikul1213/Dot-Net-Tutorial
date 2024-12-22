@@ -1,8 +1,15 @@
-﻿namespace FirstCoreMVCWebApplication.Models
+﻿using Serilog;
+
+namespace FirstCoreMVCWebApplication.Models
 {
     public class StudentRepository : IStudentRepository
     {
-
+        private readonly ILogger<StudentRepository> _logger;
+        public StudentRepository(ILogger<StudentRepository> logger)
+        {
+            _logger = logger;
+            Log.Information("Student Repository Object created for different DI life time Scoped.");
+        }
         public List<Student> DataSources()
         {
             return new List<Student>()
@@ -18,6 +25,11 @@
         {
 
             return DataSources().Where(x => x.StudentId == studentId).FirstOrDefault() ?? new Student();
+        }
+
+        public List<Student> GetAllStudents()
+        {
+            return DataSources();
         }
     }
 }

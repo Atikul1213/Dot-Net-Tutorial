@@ -57,6 +57,7 @@ try
     builder.Services.AddKeyedScoped<IItem, Item1>("Config1");
     builder.Services.AddKeyedScoped<IItem, Item2>("Config2");
     #endregion
+
     #region RateLimiter
     builder.Services.AddRateLimiter(options =>
     {
