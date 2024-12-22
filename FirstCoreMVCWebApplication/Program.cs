@@ -4,6 +4,8 @@ using FirstCoreMVCWebApplication;
 using FirstCoreMVCWebApplication.Data;
 using FirstCoreMVCWebApplication.Models;
 using FirstCoreMVCWebApplication.Models.Fluent_Validation;
+using FirstCoreMVCWebApplication.Models.ServiceCollectionDI;
+using FirstCoreMVCWebApplication.Models.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.RateLimiting;
@@ -48,7 +50,13 @@ try
         .ReadFrom.Configuration(builder.Configuration)
     );
     #endregion
+
     builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+
+    #region Service Collection DI
+    builder.Services.AddKeyedScoped<IItem, Item1>("Config1");
+    builder.Services.AddKeyedScoped<IItem, Item2>("Config2");
+    #endregion
     #region RateLimiter
     builder.Services.AddRateLimiter(options =>
     {

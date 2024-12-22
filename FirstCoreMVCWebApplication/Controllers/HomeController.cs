@@ -14,7 +14,7 @@ namespace FirstCoreMVCWebApplication.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IItem _item;
 
-        public HomeController(ILogger<HomeController> logger, IItem item)
+        public HomeController(ILogger<HomeController> logger, [FromKeyedServices("Config2")] IItem item)
         {
             _logger = logger;
             _item = item;
