@@ -15,3 +15,5 @@ namespace FirstCoreMVCWebApplication.Models.ValidationPractice
             return new ValidationResult($"This value {value} is not allowed");
         }
     }
+
+}

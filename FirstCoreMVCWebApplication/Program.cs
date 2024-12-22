@@ -1,3 +1,6 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using FirstCoreMVCWebApplication;
 using FirstCoreMVCWebApplication.Data;
 using FirstCoreMVCWebApplication.Models;
 using FirstCoreMVCWebApplication.Models.Fluent_Validation;
@@ -13,6 +16,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+#region Autofac Configure
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+{
+    containerBuilder.RegisterModule(new WebModule());
+});
+
+#endregion
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
 builder.Services.AddRateLimiter(options =>
