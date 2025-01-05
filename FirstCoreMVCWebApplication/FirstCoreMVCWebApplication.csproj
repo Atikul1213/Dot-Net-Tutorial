@@ -21,7 +21,6 @@
   <ItemGroup>
     <Folder Include="Logs\" />
     <Folder Include="SOLID\DIP\" />
-    <Folder Include="SOLID\LSP\" />
     <Folder Include="SOLID\ISP\" />
   </ItemGroup>
 
