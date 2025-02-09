@@ -5,6 +5,7 @@
         public static CreditCard GetCreditCard(string cardType)
         {
             CreditCard creditCard = null;
+
             if (cardType == "MoneyBack")
                 creditCard = new MoneyBack();
 
