@@ -1,6 +1,6 @@
 ﻿namespace FirstCoreMVCWebApplication.SOLID.Creational_Design_Pattern.Singleton
 {
-    public class Logger
+    public sealed class Logger
     {
         private const string FILE_PATH = "C:\\log.txt";
         private static Logger _logger;

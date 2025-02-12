@@ -1,6 +1,6 @@
 ﻿namespace FirstCoreMVCWebApplication.SOLID.Creational_Design_Pattern.Singleton
 {
-    public class Singleton
+    public sealed class Singleton
     {
         private static volatile Singleton instance;
         private static readonly object lockObject = new object();
