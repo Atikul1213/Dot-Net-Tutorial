@@ -64,7 +64,7 @@ namespace FirstCoreMVCWebApplication.SOLID.UnitOfWork.RepositoryInterfaceClass
 
         public void Delete(object id)
         {
-            T obj = _context.Find(id);
+            var obj = _entities.Find(id);
             _context.Remove(obj);
         }
 
