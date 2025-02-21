@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <Folder Include="Logs\" />
+    <Folder Include="SOLID\UnitOfWork\RepoImplementation\" />
+    <Folder Include="SOLID\UnitOfWork\UoWImplementation\" />
   </ItemGroup>
 
 </Project>
