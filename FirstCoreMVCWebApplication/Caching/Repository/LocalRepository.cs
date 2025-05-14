@@ -44,8 +44,11 @@ namespace FirstCoreMVCWebApplication.Caching.Repository
             return department ?? new List<Department>();
         }
 
-
-
+        public void RemoveDepartmentFromCache()
+        {
+            var cacheKey = "BrainStationDepartments.Department";
+            _cache.Remove(cacheKey);
+        }
 
 
     }

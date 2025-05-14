@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FirstCoreMVCWebApplication;
+using FirstCoreMVCWebApplication.Caching.Repository;
 using FirstCoreMVCWebApplication.Data;
 using FirstCoreMVCWebApplication.Models;
 using FirstCoreMVCWebApplication.Models.Fluent_Validation;
@@ -87,6 +88,11 @@ try
     builder.Services.AddFluentValidationAutoValidation();
     builder.Services.AddFluentValidationClientsideAdapters();
     builder.Services.AddTransient<IValidator<RegistrationModel>, RegistrationValidator>();
+
+    #region Caching Configuration
+    builder.Services.AddMemoryCache();
+    builder.Services.AddScoped<LocalRepository>();
+    #endregion
 
     var app = builder.Build();
 
