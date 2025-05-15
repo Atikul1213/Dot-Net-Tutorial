@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FirstCoreMVCWebApplication;
 using FirstCoreMVCWebApplication.Caching.Repository;
+using FirstCoreMVCWebApplication.Caching.Services;
 using FirstCoreMVCWebApplication.Data;
 using FirstCoreMVCWebApplication.Models;
 using FirstCoreMVCWebApplication.Models.Fluent_Validation;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
+using StackExchange.Redis;
 
 #region Bootstrap Configuration
 var configuration = new ConfigurationBuilder()
@@ -85,13 +87,28 @@ try
     });
     #endregion
 
+    #region Validator Configuration
     builder.Services.AddFluentValidationAutoValidation();
     builder.Services.AddFluentValidationClientsideAdapters();
     builder.Services.AddTransient<IValidator<RegistrationModel>, RegistrationValidator>();
+    #endregion
 
     #region Caching Configuration
     builder.Services.AddMemoryCache();
     builder.Services.AddScoped<LocalRepository>();
+    builder.Services.AddSingleton<CacheManager>();
+    #endregion
+
+    #region Radis cache
+    builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = builder.Configuration["RedisCacheOptions:Configuration"];
+        options.InstanceName = builder.Configuration["RedisCacheOptions:InstanceName"];
+    });
+    builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+
+    ConnectionMultiplexer.Connect(builder.Configuration["RedisCacheOptions:Configuration"]));
+
     #endregion
 
     var app = builder.Build();

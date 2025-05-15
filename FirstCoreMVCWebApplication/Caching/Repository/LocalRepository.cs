@@ -10,11 +10,18 @@ namespace FirstCoreMVCWebApplication.Caching.Repository
         private readonly ApplicationDbContext _context;
         private readonly IMemoryCache _cache;
         private readonly TimeSpan _cacheExpiration = TimeSpan.FromMinutes(30);
+        private readonly int _CacheAbsoluteDurationMinutes;
+        private readonly int _CacheSlidingDurationMinutes;
+        private readonly IConfiguration _configuration;
         public LocalRepository(ApplicationDbContext context,
-            IMemoryCache cache)
+            IMemoryCache cache,
+            IConfiguration configuration)
         {
             _context = context;
             _cache = cache;
+            _configuration = configuration;
+            _CacheAbsoluteDurationMinutes = _configuration.GetValue<int?>("CacheSettings:CacheAbsoluteDurationMinutes") ?? 30;
+            _CacheSlidingDurationMinutes = _configuration.GetValue<int?>("CacheSettings:CacheSlidingDurationMinutes") ?? 30;
         }
 
         public async Task<List<Department>> GetAllDepartmentsAsync()
