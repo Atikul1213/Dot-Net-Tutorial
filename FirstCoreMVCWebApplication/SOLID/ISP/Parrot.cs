@@ -7,7 +7,7 @@
             throw new NotImplementedException();
         }
 
-        public void Flya()
+        public void Fly()
         {
             throw new NotImplementedException();
         }

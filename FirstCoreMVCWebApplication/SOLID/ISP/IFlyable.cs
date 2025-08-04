@@ -2,6 +2,6 @@
 {
     public interface IFlyable
     {
-        void Flya();
+        void Fly();
     }
 }
