@@ -116,6 +116,22 @@ namespace FirstCoreMVCWebApplication.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            // Manually create an instance of ProductValidator
+            var validator = new ProductCreateDTOValidator();
+            var validationResult = validator.Validate(productDto);
+
+            if (!validationResult.IsValid)
+            {
+                var errorResonse = validationResult.Errors.Select(e => new
+                {
+                    Field = e.PropertyName,
+                    Error = e.ErrorMessage
+                });
+
+                return BadRequest(new { Errors = errorResonse });
+            }
+
+
             var product = new Models.Fluent_Validation.ProductModel.Product()
             {
                 SKU = productDto.SKU,
