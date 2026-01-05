@@ -1,5 +1,6 @@
 ﻿using FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel;
 using FirstCoreMVCWebApplication.Models.EFCoreRelationShip;
+using FirstCoreMVCWebApplication.Models.Fluent_Validation.ProductModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace FirstCoreMVCWebApplication.Data
@@ -103,5 +104,8 @@ namespace FirstCoreMVCWebApplication.Data
         public DbSet<Publisher> Publisher { get; set; }
         public DbSet<Author> Author { get; set; }
         public DbSet<BookPublisher> BookPublisher { get; set; }
+
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 }
