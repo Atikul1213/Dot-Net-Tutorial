@@ -1,6 +1,7 @@
 ﻿using FirstCoreMVCWebApplication.Data;
 using FirstCoreMVCWebApplication.Models.Fluent_Validation.ProductModel;
 using FirstCoreMVCWebApplication.Models.ProductModel;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,13 +13,15 @@ namespace FirstCoreMVCWebApplication.Controllers
         #region Fields
 
         private readonly ApplicationDbContext _context;
-
+        private readonly IValidator<ProductCreateDTO> _createValidator;
         #endregion
 
         #region Ctor
-        public ProductController(ApplicationDbContext context)
+        public ProductController(ApplicationDbContext context,
+            IValidator<ProductCreateDTO> createValidator)
         {
             _context = context;
+            _createValidator = createValidator;
         }
         #endregion
 

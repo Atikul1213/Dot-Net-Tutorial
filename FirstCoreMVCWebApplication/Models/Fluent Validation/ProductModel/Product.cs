@@ -20,6 +20,7 @@ namespace FirstCoreMVCWebApplication.Models.Fluent_Validation.ProductModel
         public DateTime ManufacturingDate { get; set; }
         // Expiry date (must be after the manufacturing date)
         public DateTime ExpiryDate { get; set; }
+        public Category Category { get; set; }
         // Many-to-many relationship with Tag
         public ICollection<Tag> Tags { get; set; } = new List<Tag>();
     }

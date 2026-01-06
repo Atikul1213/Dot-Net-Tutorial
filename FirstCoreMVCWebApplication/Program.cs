@@ -6,6 +6,7 @@ using FirstCoreMVCWebApplication.Caching.Services;
 using FirstCoreMVCWebApplication.Data;
 using FirstCoreMVCWebApplication.Models;
 using FirstCoreMVCWebApplication.Models.Fluent_Validation;
+using FirstCoreMVCWebApplication.Models.Fluent_Validation.ProductModel;
 using FirstCoreMVCWebApplication.Models.ServiceCollectionDI;
 using FirstCoreMVCWebApplication.Models.Services;
 using FluentValidation;
@@ -91,6 +92,7 @@ try
     builder.Services.AddFluentValidationAutoValidation();
     builder.Services.AddFluentValidationClientsideAdapters();
     builder.Services.AddTransient<IValidator<RegistrationModel>, RegistrationValidator>();
+    builder.Services.AddScoped<IValidator<ProductBaseDTO>, ProductBaseDTOValidator<ProductBaseDTO>>();
     #endregion
 
     #region Caching Configuration
