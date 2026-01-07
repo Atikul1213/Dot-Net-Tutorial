@@ -23,6 +23,28 @@ namespace FirstCoreMVCWebApplication.Models.Fluent_Validation
                 .Length(3, 50).WithMessage("Name must be 3 and 50 character")
                 .MustAsync(BeUniqueNameAsync).WithMessage("Product name must be unique");
 
+            #region Custom Validation
+
+            RuleFor(p => p.Name)
+                .Must(value => !string.IsNullOrEmpty(value) && value.All(char.IsLetter))
+                .WithMessage("Name must contain only alphabetic characters");
+
+            RuleFor(p => p.SKU)
+                .MustAsync(async (sku, CancellationToken) =>
+                    !await _context.Products.AnyAsync(x => x.SKU == sku, CancellationToken))
+                .WithMessage("SKU must be unique");
+
+            RuleFor(p => p)
+                .Custom((product1, context) =>
+                {
+                    if (product1.Name == product1.SKU)
+                    {
+                        context.AddFailure("Name", "Product name and SKU cannot be the same");
+                    }
+                });
+
+            #endregion
+
             RuleFor(p => p.Price)
                 .GreaterThan(0).WithMessage("Price must be greater than 0")
                 .PrecisionScale(8, 2, true).WithMessage("Price must have at most 8 digits in total and 2 decimal");
@@ -54,6 +76,22 @@ namespace FirstCoreMVCWebApplication.Models.Fluent_Validation
                 .NotEmpty().WithMessage("Tag cannot be empty")
                 .MaximumLength(20).WithMessage("Tag cannot exceed 20 characters");
             });
+
+
+            #region Conditional Validation 
+
+            RuleFor(p => p.SKU)
+                .NotEmpty()
+                .When(x => x.Name == "SpecialProduct")
+                .WithMessage("SKU is required for SpecialProduct");
+
+            RuleFor(p => p.Price)
+                .InclusiveBetween(50, 100)
+                .Unless(x => x.CategoryId == 1)
+                .WithMessage("Price must be between 50 and 100 unless the product is in category 1");
+
+
+            #endregion
         }
 
         private async Task<bool> BeUniqueNameAsync(string productName, CancellationToken cancellationToken)
