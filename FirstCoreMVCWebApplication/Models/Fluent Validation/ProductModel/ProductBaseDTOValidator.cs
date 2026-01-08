@@ -94,6 +94,8 @@ namespace FirstCoreMVCWebApplication.Models.Fluent_Validation
             #endregion
         }
 
+        #region Utilities
+
         private async Task<bool> BeUniqueNameAsync(string productName, CancellationToken cancellationToken)
         {
             return !await _context.Products.AsNoTracking()
@@ -124,5 +126,7 @@ namespace FirstCoreMVCWebApplication.Models.Fluent_Validation
                 return discount <= 30;
             }
         }
+
+        #endregion
     }
 }
