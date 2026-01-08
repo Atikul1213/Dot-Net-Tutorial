@@ -1,6 +1,6 @@
 ﻿namespace FirstCoreMVCWebApplication.SOLID.OCP
 {
-    public interface EncryptionProcess
+    public interface IEncryptionProcess
     {
         string ExcryptPassword(string password);
     }

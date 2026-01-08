@@ -1,12 +1,15 @@
-﻿using FluentValidation;
+﻿using FirstCoreMVCWebApplication.Data;
+using FluentValidation;
 
 namespace FirstCoreMVCWebApplication.Models.Fluent_Validation.ProductModel
 {
     public class ProductCreateDTOValidator : AbstractValidator<ProductCreateDTO>
     {
-        public ProductCreateDTOValidator()
+        private readonly ApplicationDbContext _context;
+        public ProductCreateDTOValidator(ApplicationDbContext context)
         {
-            Include(new ProductBaseDTOValidator<ProductCreateDTO>());
+            _context = context;
+            Include(new ProductBaseDTOValidator<ProductCreateDTO>(_context));
         }
     }
 }

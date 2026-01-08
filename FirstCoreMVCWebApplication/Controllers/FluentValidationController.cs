@@ -1,10 +1,16 @@
-﻿using FirstCoreMVCWebApplication.Models.Fluent_Validation.ProductModel;
+﻿using FirstCoreMVCWebApplication.Data;
+using FirstCoreMVCWebApplication.Models.Fluent_Validation.ProductModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FirstCoreMVCWebApplication.Controllers
 {
     public class FluentValidationController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        public FluentValidationController(ApplicationDbContext dbContext)
+        {
+            _context = dbContext;
+        }
         public IActionResult Index()
         {
             return View();
@@ -13,7 +19,7 @@ namespace FirstCoreMVCWebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDTO productDto)
         {
-            var validator = new ProductCreateDTOValidator();
+            var validator = new ProductCreateDTOValidator(_context);
 
             var validationResult = validator.Validate(productDto);
 

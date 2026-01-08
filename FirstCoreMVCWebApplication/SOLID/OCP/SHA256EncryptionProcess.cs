@@ -1,6 +1,6 @@
 ﻿namespace FirstCoreMVCWebApplication.SOLID.OCP
 {
-    public class SHA256EncryptionProcess : EncryptionProcess
+    public class SHA256EncryptionProcess : IEncryptionProcess
     {
         public string ExcryptPassword(string password)
         {

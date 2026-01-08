@@ -120,7 +120,7 @@ namespace FirstCoreMVCWebApplication.Controllers
                 return BadRequest(ModelState);
 
             // Manually create an instance of ProductValidator
-            var validator = new ProductCreateDTOValidator();
+            var validator = new ProductCreateDTOValidator(_context);
             var validationResult = validator.Validate(productDto);
 
             if (!validationResult.IsValid)

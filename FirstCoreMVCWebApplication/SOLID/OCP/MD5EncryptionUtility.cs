@@ -1,6 +1,6 @@
 ﻿namespace FirstCoreMVCWebApplication.SOLID.OCP
 {
-    public class MD5EncryptionUtility : EncryptionProcess
+    public class MD5EncryptionUtility : IEncryptionProcess
     {
         public string ExcryptPassword(string password)
         {
