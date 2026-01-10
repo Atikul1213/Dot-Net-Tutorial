@@ -27,5 +27,12 @@
         {
             return _item;
         }
+
+        /*
+            ItemBuilder itemBuilder = new ItemBuilder();
+            itemBuilder.SetValue1("Password");
+            itemBuilder.SetValue2("Username");
+            Item item = itemBuilder.GetItem();
+        */
     }
 }
