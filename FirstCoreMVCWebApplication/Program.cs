@@ -37,6 +37,7 @@ try
     builder.Services.AddControllersWithViews();
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    //  .UseLazyLoadingProxies());   // Enable Lazy Loading Proxies
 
     #region Autofac Configure
     builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -93,6 +94,9 @@ try
     builder.Services.AddFluentValidationClientsideAdapters();
     builder.Services.AddTransient<IValidator<RegistrationModel>, RegistrationValidator>();
     builder.Services.AddScoped<IValidator<ProductBaseDTO>, ProductBaseDTOValidator<ProductBaseDTO>>();
+    builder.Services.AddScoped<IValidator<ProductCreateDTO>, ProductCreateDTOValidator>();
+
+
     #endregion
 
     #region Caching Configuration

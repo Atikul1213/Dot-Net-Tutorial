@@ -1,6 +1,7 @@
 ﻿using FirstCoreMVCWebApplication.Models.BrainStationEmployeeModel;
 using FirstCoreMVCWebApplication.Models.EFCoreRelationShip;
 using FirstCoreMVCWebApplication.Models.Fluent_Validation.ProductModel;
+using FirstCoreMVCWebApplication.Models.LazyEagerLoading.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace FirstCoreMVCWebApplication.Data
@@ -95,7 +96,7 @@ namespace FirstCoreMVCWebApplication.Data
         // DbSets for each model
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
-        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Models.BrainStationEmployeeModel.Address> Addresses { get; set; }
         public DbSet<SkillSet> SkillSets { get; set; }
         public DbSet<JobDetail> JobDetails { get; set; }
         public DbSet<JobTitle> JobTitles { get; set; }
@@ -105,8 +106,17 @@ namespace FirstCoreMVCWebApplication.Data
         public DbSet<Author> Author { get; set; }
         public DbSet<BookPublisher> BookPublisher { get; set; }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Models.Fluent_Validation.ProductModel.Product> Products { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Models.Fluent_Validation.ProductModel.Category> Categories { get; set; }
+
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
+        public DbSet<Models.LazyEagerLoading.Model.Address> Addresses1 { get; set; }
+        public DbSet<Models.LazyEagerLoading.Model.Category> Categories1 { get; set; }
+        public DbSet<Models.LazyEagerLoading.Model.Product> Products1 { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
     }
 }
